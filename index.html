@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Harbin Kitchen – 东北小炒</title>
+  <meta name="description" content="Autentisk kinesisk comfort food i Gentofte – ægte smag fra Harbin">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --red:           #C41E3A;
+      --red-dark:      #9E1830;
+      --red-deep:      #7A1225;
+      --red-glow:      rgba(196, 30, 58, 0.12);
+      --gold:          #D4A574;
+      --gold-light:    #E8C9A0;
+      --cream:         #FDF6F0;
+      --cream-warm:    #FAF0E6;
+      --warm-white:    #FFF9F5;
+      --dark:          #1A1714;
+      --dark-soft:     #2E2A25;
+      --text:          #2E2A25;
+      --text-light:    #8A8480;
+      --border-warm:   #F0E0D6;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', 'Noto Sans SC', sans-serif;
+      color: var(--text);
+      background: var(--warm-white);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ═══ Nav ═══ */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 48px;
+      transition: all 0.4s;
+    }
+    nav.light { color: var(--cream); }
+    nav.dark {
+      color: var(--text);
+      background: rgba(255,249,245,0.95);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 1px 0 var(--border-warm);
+    }
+    .nav-logo {
+      font-size: 20px; font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+    .nav-logo span {
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: 12px; font-weight: 300;
+      margin-left: 8px; opacity: 0.7;
+    }
+    nav.light .nav-logo { color: var(--cream); }
+    nav.dark .nav-logo { color: var(--red-dark); }
+    .nav-links { display: flex; gap: 32px; align-items: center; }
+    .nav-links a {
+      text-decoration: none; font-size: 13px; font-weight: 500;
+      letter-spacing: 0.5px; transition: all 0.2s;
+    }
+    nav.light .nav-links a { color: rgba(253,246,240,0.7); }
+    nav.light .nav-links a:hover { color: var(--cream); }
+    nav.dark .nav-links a { color: var(--text-light); }
+    nav.dark .nav-links a:hover { color: var(--red); }
+    .btn-nav {
+      padding: 10px 24px; border-radius: 100px;
+      font-size: 13px; font-weight: 600;
+      text-decoration: none; transition: all 0.3s;
+    }
+    nav.light .btn-nav {
+      background: var(--red); color: var(--cream);
+    }
+    nav.light .btn-nav:hover { background: var(--red-dark); }
+    nav.dark .btn-nav {
+      background: var(--red); color: #fff;
+    }
+    nav.dark .btn-nav:hover { background: var(--red-dark); }
+
+    /* ═══ Hero ═══ */
+    .hero {
+      position: relative;
+      height: 100vh; min-height: 700px;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background: url('https://www.harbinkitchen.dk/wp-content/uploads/2026/03/首页图.png') center/cover no-repeat;
+      transform: scale(1.05);
+      transition: transform 8s ease-out;
+    }
+    .hero-bg.loaded { transform: scale(1); }
+    .hero-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(180deg,
+        rgba(122,18,37,0.35) 0%,
+        rgba(26,23,20,0.65) 100%);
+    }
+    .hero-content {
+      position: relative; z-index: 1;
+      text-align: center; color: var(--cream);
+      max-width: 800px; padding: 0 24px;
+    }
+    .hero-fadein {
+      opacity: 0; transform: translateY(20px);
+      animation: fadeUp 0.8s ease forwards;
+    }
+    .hero-fadein:nth-child(2) { animation-delay: 0.15s; }
+    .hero-fadein:nth-child(3) { animation-delay: 0.3s; }
+    .hero-fadein:nth-child(4) { animation-delay: 0.45s; }
+    .hero-fadein:nth-child(5) { animation-delay: 0.6s; }
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .hero-overline {
+      font-size: 12px; font-weight: 500;
+      letter-spacing: 4px; text-transform: uppercase;
+      color: var(--gold-light);
+      margin-bottom: 16px;
+    }
+    .hero-title {
+      font-size: clamp(52px, 9vw, 96px);
+      font-weight: 700;
+      letter-spacing: -2px;
+      line-height: 1;
+      margin-bottom: 12px;
+    }
+    .hero-title-cn {
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: clamp(20px, 3vw, 30px);
+      font-weight: 300;
+      letter-spacing: 6px;
+      color: rgba(253,246,240,0.8);
+      margin-bottom: 24px;
+    }
+    .hero-desc {
+      font-size: 16px; font-weight: 300;
+      color: rgba(253,246,240,0.7);
+      max-width: 480px; margin: 0 auto 40px;
+    }
+    .hero-actions { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+    .btn-red {
+      background: var(--red); color: #fff;
+      padding: 14px 32px; border-radius: 100px;
+      font-size: 14px; font-weight: 600;
+      text-decoration: none; transition: all 0.3s;
+      border: none; cursor: pointer;
+    }
+    .btn-red:hover {
+      background: var(--red-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(196,30,58,0.3);
+    }
+    .btn-ghost {
+      background: transparent;
+      color: var(--cream);
+      padding: 14px 32px;
+      border: 1px solid rgba(253,246,240,0.3);
+      border-radius: 100px;
+      font-size: 14px; font-weight: 500;
+      text-decoration: none; transition: all 0.3s;
+    }
+    .btn-ghost:hover { border-color: var(--cream); background: rgba(253,246,240,0.08); }
+
+    .scroll-line {
+      position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
+      width: 1px; height: 40px;
+      background: linear-gradient(180deg, transparent, rgba(253,246,240,0.4));
+    }
+
+    /* ═══ Welcome ═══ */
+    .welcome {
+      padding: 120px 24px;
+      text-align: center;
+      background: var(--cream);
+    }
+    .section-overline {
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 4px; text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 14px;
+    }
+    .section-title {
+      font-size: clamp(30px, 4.5vw, 44px);
+      font-weight: 700; color: var(--dark);
+      line-height: 1.2; letter-spacing: -1px;
+      margin-bottom: 6px;
+    }
+    .section-title-cn {
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: clamp(16px, 2vw, 22px);
+      font-weight: 300;
+      color: var(--red-dark);
+      letter-spacing: 4px;
+      margin-bottom: 28px;
+    }
+    .section-text {
+      font-size: 16px; font-weight: 300;
+      color: var(--text-light);
+      max-width: 520px; margin: 0 auto;
+      line-height: 1.9;
+    }
+    .section-text strong { font-weight: 500; color: var(--text); }
+
+    /* ═══ Signature Dish ═══ */
+    .signature {
+      position: relative;
+      height: 70vh; min-height: 450px;
+      display: flex; align-items: center;
+      overflow: hidden;
+    }
+    .signature-bg {
+      position: absolute; inset: 0;
+      background: url('https://www.harbinkitchen.dk/wp-content/uploads/2026/03/微信图片_2026-03-01_153441_281-1024x502.png') center/cover no-repeat;
+    }
+    .signature-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(90deg,
+        rgba(122,18,37,0.88) 0%,
+        rgba(122,18,37,0.5) 50%,
+        rgba(26,23,20,0.3) 100%);
+    }
+    .signature-content {
+      position: relative; z-index: 1;
+      padding: 0 60px;
+      max-width: 560px;
+      color: var(--cream);
+    }
+    .signature-content .section-overline { color: var(--gold-light); }
+    .signature-content .section-title { color: var(--cream); }
+    .signature-content .section-title-cn { color: var(--gold-light); }
+    .signature-content .section-text { color: rgba(253,246,240,0.75); text-align: left; margin: 0; }
+    .signature-chip {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(253,246,240,0.1);
+      border: 1px solid rgba(212,165,116,0.35);
+      padding: 8px 16px; border-radius: 100px;
+      font-size: 12px; font-weight: 500;
+      color: var(--gold-light);
+      margin-top: 24px;
+      backdrop-filter: blur(8px);
+    }
+
+    /* ═══ Menu ═══ */
+    .menu-section {
+      padding: 100px 24px;
+      background: var(--cream);
+    }
+    .menu-section .section-title,
+    .menu-section .section-title-cn { text-align: center; }
+    .menu-grid {
+      max-width: 1100px; margin: 48px auto 0;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 16px;
+    }
+    .menu-card {
+      position: relative; border-radius: 16px;
+      overflow: hidden; cursor: pointer;
+      text-decoration: none; color: inherit;
+      transition: all 0.4s; aspect-ratio: 1;
+    }
+    .menu-card:hover { transform: scale(1.03); }
+    .menu-card img {
+      width: 100%; height: 100%;
+      object-fit: cover; transition: transform 0.6s;
+    }
+    .menu-card:hover img { transform: scale(1.08); }
+    .menu-card-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(180deg, transparent 40%, rgba(122,18,37,0.85) 100%);
+      display: flex; flex-direction: column;
+      justify-content: flex-end; padding: 16px;
+      transition: background 0.3s;
+    }
+    .menu-card:hover .menu-card-overlay {
+      background: linear-gradient(180deg, transparent 20%, rgba(122,18,37,0.92) 100%);
+    }
+    .menu-card-overlay h3 {
+      font-size: 14px; font-weight: 600; color: #fff;
+    }
+    .menu-card-overlay p {
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: 11px; color: var(--gold-light); font-weight: 300;
+    }
+
+    /* ═══ Takeaway ═══ */
+    .takeaway {
+      padding: 80px 24px;
+      background: var(--red-deep);
+      color: var(--cream);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .takeaway-glow {
+      position: absolute; top: -100px; left: 50%; transform: translateX(-50%);
+      width: 600px; height: 300px;
+      background: radial-gradient(ellipse, rgba(212,165,116,0.12), transparent 70%);
+      pointer-events: none;
+    }
+    .takeaway .section-title { position: relative; color: var(--cream); }
+    .takeaway .section-title-cn { position: relative; color: var(--gold-light); }
+    .takeaway-number {
+      position: relative;
+      font-size: 96px; font-weight: 700;
+      letter-spacing: -4px;
+      color: var(--gold);
+      margin: 12px 0; line-height: 1;
+    }
+    .takeaway-number span {
+      font-size: 32px; font-weight: 300; letter-spacing: 0;
+    }
+    .takeaway-note {
+      position: relative;
+      font-size: 14px; font-weight: 300;
+      color: rgba(253,246,240,0.5);
+      margin-bottom: 32px;
+    }
+
+    /* ═══ Info ═══ */
+    .info-section {
+      padding: 100px 24px;
+      max-width: 1100px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 80px;
+    }
+    .info-block h3 {
+      font-size: 20px; font-weight: 700;
+      color: var(--dark); margin-bottom: 24px;
+      letter-spacing: -0.5px;
+    }
+    .info-row {
+      display: flex; gap: 14px; align-items: flex-start;
+      margin-bottom: 14px; font-size: 15px; font-weight: 300;
+    }
+    .info-row .icon { font-size: 16px; flex-shrink: 0; margin-top: 2px; }
+    .info-row .label { font-weight: 500; color: var(--dark); min-width: 80px; }
+    .info-row .value { color: var(--text-light); }
+    .info-row a { color: var(--red-dark); text-decoration: none; font-weight: 400; }
+    .info-row a:hover { text-decoration: underline; }
+
+    /* ═══ Footer ═══ */
+    footer {
+      padding: 48px 24px;
+      background: var(--red-deep);
+      text-align: center;
+      color: var(--cream);
+    }
+    footer .footer-logo {
+      font-size: 20px; font-weight: 700;
+      color: var(--cream); margin-bottom: 4px;
+      letter-spacing: -0.5px;
+    }
+    footer .footer-cn {
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: 12px; font-weight: 300;
+      color: var(--gold-light);
+    }
+    footer p { font-size: 13px; font-weight: 300; color: rgba(253,246,240,0.5); }
+    footer .social { display: flex; gap: 20px; justify-content: center; margin: 14px 0; }
+    footer .social a { color: var(--gold-light); text-decoration: none; font-size: 13px; font-weight: 500; }
+    footer .social a:hover { color: var(--cream); }
+
+    /* ═══ Responsive ═══ */
+    @media (max-width: 768px) {
+      nav { padding: 14px 20px; }
+      .nav-links a:not(.btn-nav) { display: none; }
+      .hero-title { letter-spacing: -1px; }
+      .signature { height: 80vh; }
+      .signature-content { padding: 0 24px; }
+      .signature-overlay { background: rgba(122,18,37,0.85); }
+      .menu-grid { grid-template-columns: repeat(3, 1fr); gap: 10px; }
+      .info-section { grid-template-columns: 1fr; gap: 50px; }
+      .takeaway-number { font-size: 64px; }
+    }
+    @media (max-width: 480px) {
+      .menu-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav id="nav" class="light">
+  <div class="nav-logo">Harbin Kitchen <span>东北小炒</span></div>
+  <div class="nav-links">
+    <a href="#menu">Menu</a>
+    <a href="#info">Kontakt</a>
+    <a href="https://www.harbinkitchen.dk/book-bord/">Book Bord</a>
+    <a href="https://order.harbinkitchen.dk" class="btn-nav">Bestil</a>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-bg" id="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <p class="hero-overline hero-fadein">🏮 Gentofte · København</p>
+    <h1 class="hero-title hero-fadein">Harbin Kitchen</h1>
+    <p class="hero-title-cn hero-fadein">东 北 小 炒</p>
+    <p class="hero-desc hero-fadein">Traditionel kinesisk comfort food – ægte smag fra Harbin, serveret med nordisk varme</p>
+    <div class="hero-actions hero-fadein">
+      <a href="https://order.harbinkitchen.dk" class="btn-red">Bestil Take Away</a>
+      <a href="#menu" class="btn-ghost">Se Menu</a>
+    </div>
+  </div>
+  <div class="scroll-line"></div>
+</section>
+
+<!-- Welcome -->
+<section class="welcome">
+  <p class="section-overline">Velkommen</p>
+  <h2 class="section-title">Velkommen til Harbin Kitchen!</h2>
+  <p class="section-title-cn">欢 迎 光 临 东 北 小 炒</p>
+  <p class="section-text">
+    Oplev den sande smag af Harbin Kitchen! Vi kombinerer <strong>friske råvarer</strong> med generationers opskrifter for at skabe ægte kinesisk comfort food.<br><br>
+    体验东北小炒和经典川菜的正宗美味！我们选用新鲜食材，传承数代秘方，为您精心烹制地道的中国家常菜。
+  </p>
+</section>
+
+<!-- Signature Dish -->
+<section class="signature">
+  <div class="signature-bg"></div>
+  <div class="signature-overlay"></div>
+  <div class="signature-content">
+    <p class="section-overline">Signaturret</p>
+    <h2 class="section-title">Liu Rou Duan</h2>
+    <p class="section-title-cn">溜 肉 段</p>
+    <p class="section-text">
+      Grydestegte svinekødsstrimler i en rig, sødsur glace med grøntsager – perfekt afbalanceret med autentiske kinesiske smagsnoter.<br><br>
+      鲜嫩的猪肉条裹上浓郁酸甜的蔬菜酱汁，完美融合了地道的中国风味。
+    </p>
+    <div class="signature-chip">⭐ Kokkens anbefaling</div>
+  </div>
+</section>
+
+<!-- Menu -->
+<section class="menu-section" id="menu">
+  <p class="section-overline">Vores Menu</p>
+  <h2 class="section-title">Smag på Kina</h2>
+  <p class="section-title-cn">品 味 中 国</p>
+  <div class="menu-grid">
+    <a class="menu-card">
+      <img src="https://www.harbinkitchen.dk/wp-content/uploads/2026/05/微信图片_20260512221217_278_948-300x300.png" alt="Forretter">
+      <div class="menu-card-overlay"><h3>Forretter</h3><p>前餐</p></div>
+    </a>
+    <a class="menu-card">
+      <img src="https://www.harbinkitchen.dk/wp-content/uploads/2026/05/微信图片_20260512215758_260_948-300x300.png" alt="Suppe">
+      <div class="menu-card-overlay"><h3>Suppe</h3><p>餐前汤</p></div>
+    </a>
+    <a class="menu-card">
+      <img src="https://www.harbinkitchen.dk/wp-content/uploads/2026/05/微信图片_20260512215731_258_948-287x300.jpg" alt="Dim Sum">
+      <div class="menu-card-overlay"><h3>Dim Sum</h3><p>点心</p></div>
+    </a>
+    <a class="menu-card">
+      <img src="https://www.harbinkitchen.dk/wp-content/uploads/2026/05/K4-300x300.jpg" alt="Kold Rette">
+      <div class="menu-card-overlay"><h3>Kold Rette</h3><p>冷盘</p></div>
+    </a>
+    <a class="menu-card">
+      <img src="https://www.harbinkitchen.dk/wp-content/uploads/2026/05/H4-300x300.jpg" alt="Kylling">
+      <div class="menu-card-overlay"><h3>Kylling</h3><p>鸡肉</p></div>
+    </a>
+    <a class="menu-card">
+      <img src="https://www.harbinkitchen.dk/wp-content/uploads/2026/05/H10-300x300.jpg" alt="Oksekød">
+      <div class="menu-card-overlay"><h3>Oksekød</h3><p>牛肉</p></div>
+    </a>
+    <a class="menu-card">
+      <img src="https://www.harbinkitchen.dk/wp-content/uploads/2026/05/H15-300x300.jpg" alt="Svinekød">
+      <div class="menu-card-overlay"><h3>Svinekød</h3><p>猪肉</p></div>
+    </a>
+    <a class="menu-card">
+      <img src="https://www.harbinkitchen.dk/wp-content/uploads/2026/05/H27-300x300.jpg" alt="Lammekød">
+      <div class="menu-card-overlay"><h3>Lammekød</h3><p>羊肉</p></div>
+    </a>
+    <a class="menu-card">
+      <img src="https://www.harbinkitchen.dk/wp-content/uploads/2026/05/H28-1-300x300.jpg" alt="And">
+      <div class="menu-card-overlay"><h3>And</h3><p>鸭肉</p></div>
+    </a>
+    <a class="menu-card">
+      <img src="https://www.harbinkitchen.dk/wp-content/uploads/2026/05/H31-300x300.jpg" alt="Rejer">
+      <div class="menu-card-overlay"><h3>Rejer</h3><p>虾类</p></div>
+    </a>
+    <a class="menu-card">
+      <img src="https://www.harbinkitchen.dk/wp-content/uploads/2026/05/H40-300x300.jpg" alt="Fisk">
+      <div class="menu-card-overlay"><h3>Fisk</h3><p>鱼类</p></div>
+    </a>
+    <a class="menu-card">
+      <img src="https://www.harbinkitchen.dk/wp-content/uploads/2026/05/H43-300x300.jpg" alt="Grøntsager">
+      <div class="menu-card-overlay"><h3>Grøntsager</h3><p>青菜</p></div>
+    </a>
+    <a class="menu-card">
+      <img src="https://www.harbinkitchen.dk/wp-content/uploads/2026/05/N56-300x300.jpg" alt="Nudler & Ris">
+      <div class="menu-card-overlay"><h3>Nudler & Ris</h3><p>炒面炒饭</p></div>
+    </a>
+    <a class="menu-card">
+      <img src="https://www.harbinkitchen.dk/wp-content/uploads/2026/03/S60.jpg" alt="Sauces">
+      <div class="menu-card-overlay"><h3>Sauces</h3><p>酱汁</p></div>
+    </a>
+    <a class="menu-card">
+      <img src="https://www.harbinkitchen.dk/wp-content/uploads/2026/03/V67.Soppro-300x200.jpg" alt="Drikkevarer">
+      <div class="menu-card-overlay"><h3>Drikkevarer</h3><p>饮品</p></div>
+    </a>
+  </div>
+  <div style="text-align:center;margin-top:48px;">
+    <a href="https://order.harbinkitchen.dk" class="btn-red" style="display:inline-block;padding:14px 36px;">Bestil Nu →</a>
+  </div>
+</section>
+
+<!-- Takeaway -->
+<section class="takeaway">
+  <div class="takeaway-glow"></div>
+  <p class="section-overline" style="position:relative;color:var(--gold-light)">Take Away</p>
+  <h2 class="section-title">Eksklusiv Take Away Rabat</h2>
+  <p class="section-title-cn" style="position:relative">外 卖 专 属 九 折</p>
+  <div class="takeaway-number">10%<span>off</span></div>
+  <p class="takeaway-note">Gælder alle retter – undtagen drikkevarer & saucer · 外卖全线九折（酒水酱汁除外）</p>
+  <a href="https://order.harbinkitchen.dk" class="btn-red" style="position:relative">Bestil Take Away →</a>
+</section>
+
+<!-- Info -->
+<section class="info-section" id="info">
+  <div class="info-block">
+    <h3>🕐 Åbningstider</h3>
+    <div class="info-row"><span class="icon">📅</span><span class="label">Søn–Tor</span><span class="value">12:00 – 21:30</span></div>
+    <div class="info-row"><span class="icon">📅</span><span class="label">Fre–Lør</span><span class="value">12:00 – 22:00</span></div>
+  </div>
+  <div class="info-block">
+    <h3>📍 Kontakt</h3>
+    <div class="info-row"><span class="icon">🏠</span><span class="value">Vangedevej 129B, 2820 Gentofte</span></div>
+    <div class="info-row"><span class="icon">📞</span><span class="value"><a href="tel:+4553335777">+45 53 33 57 77</a></span></div>
+    <div class="info-row"><span class="icon">✉️</span><span class="value"><a href="mailto:info@harbinkitchen.dk">info@harbinkitchen.dk</a></span></div>
+    <div class="info-row"><span class="icon">📘</span><span class="value"><a href="https://www.facebook.com/profile.php?id=61587957833786" target="_blank">Facebook</a></span></div>
+    <div class="info-row"><span class="icon">😊</span><span class="value"><a href="https://www.findsmiley.dk/Sider/Search.aspx?k=41519053" target="_blank">Fødevarestyrelsen</a></span></div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-logo">Harbin Kitchen</div>
+  <p class="footer-cn">东北小炒</p>
+  <p style="margin-top:10px;color:rgba(253,246,240,0.5)">Vangedevej 129B, 2820 Gentofte · +45 53 33 57 77</p>
+  <div class="social">
+    <a href="https://www.facebook.com/profile.php?id=61587957833786" target="_blank">Facebook</a>
+    <a href="https://order.harbinkitchen.dk">Bestil Online</a>
+  </div>
+  <p style="margin-top:10px;font-size:11px;opacity:0.4">© 2026 Harbin Kitchen. Alle rettigheder forbeholdes.</p>
+</footer>
+
+<script>
+  // Hero bg zoom-in animation
+  window.addEventListener('load', () => {
+    setTimeout(() => document.getElementById('hero-bg').classList.add('loaded'), 100);
+  });
+  // Nav color switch
+  const nav = document.getElementById('nav');
+  const hero = document.querySelector('.hero');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > hero.offsetHeight - 60) {
+      nav.className = 'dark';
+    } else {
+      nav.className = 'light';
+    }
+  });
+</script>
+
+</body>
+</html>
