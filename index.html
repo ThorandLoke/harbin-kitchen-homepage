@@ -388,6 +388,75 @@
     @media (max-width: 480px) {
       .menu-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
     }
+
+    /* ═══ Menu Modal ═══ */
+    .modal-backdrop {
+      display: none; position: fixed; inset: 0; z-index: 200;
+      background: rgba(26,23,20,0.6); backdrop-filter: blur(6px);
+      justify-content: center; align-items: center; padding: 24px;
+    }
+    .modal-backdrop.active { display: flex; }
+    .modal {
+      background: var(--warm-white); border-radius: 20px;
+      max-width: 560px; width: 100%; max-height: 80vh;
+      display: flex; flex-direction: column;
+      box-shadow: 0 24px 80px rgba(26,23,20,0.3);
+      animation: modalIn 0.3s ease;
+    }
+    @keyframes modalIn {
+      from { opacity: 0; transform: translateY(20px) scale(0.97); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .modal-header {
+      padding: 24px 28px 16px; display: flex; justify-content: space-between; align-items: flex-start;
+      border-bottom: 1px solid var(--border-warm);
+    }
+    .modal-header-titles h2 {
+      font-size: 20px; font-weight: 700; color: var(--dark); letter-spacing: -0.5px;
+    }
+    .modal-header-titles p {
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: 13px; font-weight: 300; color: var(--red-dark); letter-spacing: 2px; margin-top: 2px;
+    }
+    .modal-close {
+      width: 36px; height: 36px; border-radius: 50%; border: none;
+      background: var(--cream); cursor: pointer; font-size: 18px;
+      color: var(--text-light); transition: all 0.2s; flex-shrink: 0;
+    }
+    .modal-close:hover { background: var(--border-warm); color: var(--dark); }
+    .modal-body {
+      padding: 8px 0; overflow-y: auto; flex: 1;
+    }
+    .dish-item {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      padding: 12px 28px; gap: 12px;
+      transition: background 0.15s;
+    }
+    .dish-item:hover { background: var(--cream); }
+    .dish-info { flex: 1; }
+    .dish-name {
+      font-size: 14px; font-weight: 500; color: var(--dark); line-height: 1.4;
+    }
+    .dish-name-cn {
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: 11px; font-weight: 300; color: var(--text-light); margin-top: 1px;
+    }
+    .dish-price-col {
+      text-align: right; flex-shrink: 0;
+    }
+    .dish-price {
+      font-size: 14px; font-weight: 600; color: var(--dark); white-space: nowrap;
+    }
+    .dish-takeaway {
+      font-size: 10px; font-weight: 500; color: var(--red);
+      background: rgba(196,30,58,0.08); padding: 2px 8px; border-radius: 100px;
+      margin-top: 3px; display: inline-block; white-space: nowrap;
+    }
+    .modal-footer {
+      padding: 16px 28px; border-top: 1px solid var(--border-warm);
+      text-align: center;
+    }
+    .modal-footer .btn-red { font-size: 13px; padding: 12px 28px; }
   </style>
 </head>
 <body>
@@ -453,66 +522,66 @@
   <h2 class="section-title">Smag på Kina</h2>
   <p class="section-title-cn">品 味 中 国</p>
   <div class="menu-grid">
-    <a class="menu-card">
+    <div class="menu-card" data-cat="forretter">
       <img src="https://www.harbinkitchen.dk/wp-content/uploads/2026/05/微信图片_20260512221217_278_948-300x300.png" alt="Forretter">
       <div class="menu-card-overlay"><h3>Forretter</h3><p>前餐</p></div>
-    </a>
-    <a class="menu-card">
+    </div>
+    <div class="menu-card" data-cat="dagens_suppe">
       <img src="https://www.harbinkitchen.dk/wp-content/uploads/2026/05/微信图片_20260512215758_260_948-300x300.png" alt="Suppe">
       <div class="menu-card-overlay"><h3>Suppe</h3><p>餐前汤</p></div>
-    </a>
-    <a class="menu-card">
+    </div>
+    <div class="menu-card" data-cat="dum">
       <img src="https://www.harbinkitchen.dk/wp-content/uploads/2026/05/微信图片_20260512215731_258_948-287x300.jpg" alt="Dim Sum">
       <div class="menu-card-overlay"><h3>Dim Sum</h3><p>点心</p></div>
-    </a>
-    <a class="menu-card">
+    </div>
+    <div class="menu-card" data-cat="kold_rette">
       <img src="https://www.harbinkitchen.dk/wp-content/uploads/2026/05/K4-300x300.jpg" alt="Kold Rette">
       <div class="menu-card-overlay"><h3>Kold Rette</h3><p>冷盘</p></div>
-    </a>
-    <a class="menu-card">
+    </div>
+    <div class="menu-card" data-cat="hovedretter_kylling">
       <img src="https://www.harbinkitchen.dk/wp-content/uploads/2026/05/H4-300x300.jpg" alt="Kylling">
       <div class="menu-card-overlay"><h3>Kylling</h3><p>鸡肉</p></div>
-    </a>
-    <a class="menu-card">
+    </div>
+    <div class="menu-card" data-cat="hovedretter_oksekoed">
       <img src="https://www.harbinkitchen.dk/wp-content/uploads/2026/05/H10-300x300.jpg" alt="Oksekød">
       <div class="menu-card-overlay"><h3>Oksekød</h3><p>牛肉</p></div>
-    </a>
-    <a class="menu-card">
+    </div>
+    <div class="menu-card" data-cat="hovedretter_svinekoed">
       <img src="https://www.harbinkitchen.dk/wp-content/uploads/2026/05/H15-300x300.jpg" alt="Svinekød">
       <div class="menu-card-overlay"><h3>Svinekød</h3><p>猪肉</p></div>
-    </a>
-    <a class="menu-card">
+    </div>
+    <div class="menu-card" data-cat="hovedretter_lammekoed">
       <img src="https://www.harbinkitchen.dk/wp-content/uploads/2026/05/H27-300x300.jpg" alt="Lammekød">
       <div class="menu-card-overlay"><h3>Lammekød</h3><p>羊肉</p></div>
-    </a>
-    <a class="menu-card">
+    </div>
+    <div class="menu-card" data-cat="hovedretter_and">
       <img src="https://www.harbinkitchen.dk/wp-content/uploads/2026/05/H28-1-300x300.jpg" alt="And">
       <div class="menu-card-overlay"><h3>And</h3><p>鸭肉</p></div>
-    </a>
-    <a class="menu-card">
+    </div>
+    <div class="menu-card" data-cat="hovedretter_rejer">
       <img src="https://www.harbinkitchen.dk/wp-content/uploads/2026/05/H31-300x300.jpg" alt="Rejer">
       <div class="menu-card-overlay"><h3>Rejer</h3><p>虾类</p></div>
-    </a>
-    <a class="menu-card">
+    </div>
+    <div class="menu-card" data-cat="hovedretter_fisk">
       <img src="https://www.harbinkitchen.dk/wp-content/uploads/2026/05/H40-300x300.jpg" alt="Fisk">
       <div class="menu-card-overlay"><h3>Fisk</h3><p>鱼类</p></div>
-    </a>
-    <a class="menu-card">
+    </div>
+    <div class="menu-card" data-cat="hovedretter_groentsager">
       <img src="https://www.harbinkitchen.dk/wp-content/uploads/2026/05/H43-300x300.jpg" alt="Grøntsager">
       <div class="menu-card-overlay"><h3>Grøntsager</h3><p>青菜</p></div>
-    </a>
-    <a class="menu-card">
+    </div>
+    <div class="menu-card" data-cat="hovedretter_nudler">
       <img src="https://www.harbinkitchen.dk/wp-content/uploads/2026/05/N56-300x300.jpg" alt="Nudler & Ris">
       <div class="menu-card-overlay"><h3>Nudler & Ris</h3><p>炒面炒饭</p></div>
-    </a>
-    <a class="menu-card">
+    </div>
+    <div class="menu-card" data-cat="sauce">
       <img src="https://www.harbinkitchen.dk/wp-content/uploads/2026/03/S60.jpg" alt="Sauces">
       <div class="menu-card-overlay"><h3>Sauces</h3><p>酱汁</p></div>
-    </a>
-    <a class="menu-card">
+    </div>
+    <div class="menu-card" data-cat="drikkekort">
       <img src="https://www.harbinkitchen.dk/wp-content/uploads/2026/03/V67.Soppro-300x200.jpg" alt="Drikkevarer">
       <div class="menu-card-overlay"><h3>Drikkevarer</h3><p>饮品</p></div>
-    </a>
+    </div>
   </div>
   <div style="text-align:center;margin-top:48px;">
     <a href="https://order.harbinkitchen.dk" class="btn-red" style="display:inline-block;padding:14px 36px;">Bestil Nu →</a>
@@ -559,6 +628,23 @@
   <p style="margin-top:10px;font-size:11px;opacity:0.4">© 2026 Harbin Kitchen. Alle rettigheder forbeholdes.</p>
 </footer>
 
+<!-- Menu Modal -->
+<div class="modal-backdrop" id="menuModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-header-titles">
+        <h2 id="modalTitle"></h2>
+        <p id="modalTitleCn"></p>
+      </div>
+      <button class="modal-close" id="modalClose">✕</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+    <div class="modal-footer">
+      <a href="https://order.harbinkitchen.dk" class="btn-red">Bestil Nu →</a>
+    </div>
+  </div>
+</div>
+
 <script>
   // Hero bg zoom-in animation
   window.addEventListener('load', () => {
@@ -574,6 +660,183 @@
       nav.className = 'light';
     }
   });
+
+  // ═══ Menu Modal ═══
+  const MENU = [
+    {id:"forretter",name_da:"Forretter",name_zh:"前菜",discount:true,items:[
+      {code:"F1",name_da:"Snackkurv (til 2 personer)",name_zh:"前餐拼盘",price:128},
+      {code:"F2",name_da:"Mini forårsruller 6stk.",name_zh:"小春卷6个",price:48},
+      {code:"F3",name_da:"Hjemmelavede forårsruller med oksekød 4 stk.",name_zh:"牛肉春卷4个",price:58},
+      {code:"F4",name_da:"Hjemmelavede forårsruller med and 3 stk.",name_zh:"鸭春卷3个",price:58},
+      {code:"F5",name_da:"Dybstegte Tempura Rejer 4stk.",name_zh:"日本炸虾4个",price:58},
+      {code:"F6",name_da:"Kyllinge nuggets 6 stk",name_zh:"炸鸡块6块",price:58},
+      {code:"F7",name_da:"Dybstegte dumplings med kylling 5stk",name_zh:"炸鸡肉饺子5个",price:58},
+      {code:"F8",name_da:"Hjemmelavede dumplings i chiliolie",name_zh:"红油水饺4个",price:58},
+      {code:"F9",name_da:"Kogte Harbin-dumplings 10stk.",name_zh:"东北水饺10个",price:128},
+      {code:"F10",name_da:"Rejer Chips",name_zh:"虾片",price:18}
+    ]},
+    {id:"dagens_suppe",name_da:"Dagens Suppe",name_zh:"餐前汤",discount:true,items:[
+      {code:"S1",name_da:"Peking suppe",name_zh:"北京汤",price:58},
+      {code:"S2",name_da:"Kylling suppe",name_zh:"鸡丝汤",price:58},
+      {code:"S3",name_da:"Wonton suppe",name_zh:"云吞汤",price:58},
+      {code:"S4",name_da:"Majssuppe med kylling stykker",name_zh:"鸡蛋玉米羹",price:58}
+    ]},
+    {id:"dum",name_da:"Dim Sum",name_zh:"点心",discount:true,items:[
+      {code:"D1",name_da:"Char Siu Bao 3stk.",name_zh:"叉烧包3个",price:58},
+      {code:"D2",name_da:"Siu Mai 4stk.",name_zh:"烧卖4个",price:58},
+      {code:"D3",name_da:"Har Gow 4stk.",name_zh:"虾饺4个",price:58},
+      {code:"D4",name_da:"Sesamboller 5stk.",name_zh:"芝麻球5个",price:58}
+    ]},
+    {id:"kold_rette",name_da:"Kold Rette",name_zh:"冷盘",discount:true,items:[
+      {code:"K1",name_da:"Special edamame",name_zh:"醉香毛豆",price:38},
+      {code:"K2",name_da:"Kimchi kinakål",name_zh:"辣白菜",price:58},
+      {code:"K3",name_da:"Agurk strimler med citron sauce",name_zh:"柠檬黄瓜条",price:58},
+      {code:"K4",name_da:"Fuqi Feipian",name_zh:"夫妻肺片",price:148},
+      {code:"K5",name_da:"Oksemave salad i chilioil",name_zh:"红油牛肚",price:148},
+      {code:"K6",name_da:"Okse-tripe salat i chili sauce",name_zh:"凉拌牛百叶",price:148},
+      {code:"K7",name_da:"Kylling med citron sauce",name_zh:"柠檬鸡",price:138}
+    ]},
+    {id:"hovedretter_kylling",name_da:"Hovedretter – Kylling",name_zh:"鸡肉",discount:true,items:[
+      {code:"H1",name_da:"Dry wok med kylling",name_zh:"干锅鸡",price:168},
+      {code:"H2",name_da:"Gong Bao Kylling",name_zh:"宫保鸡丁",price:168},
+      {code:"H3",name_da:"Kylling i sur sød sauce",name_zh:"甜酸鸡",price:168},
+      {code:"H4",name_da:"Kylling a la Harbin",name_zh:"哈尔滨辣子鸡",price:168},
+      {code:"H5",name_da:"Lynstegt kylling i østerssauce",name_zh:"蚝油鸡片",price:168},
+      {code:"H6",name_da:"Kylling i rød Karry",name_zh:"红咖喱鸡",price:168}
+    ]},
+    {id:"hovedretter_oksekoed",name_da:"Hovedretter – Oksekød",name_zh:"牛肉",discount:true,items:[
+      {code:"H7",name_da:"Dry wok med oksekød",name_zh:"干锅牛肉",price:188},
+      {code:"H8",name_da:"Oksekød i sort peber sauce på jernfad",name_zh:"铁板黑椒牛肉",price:188},
+      {code:"H9",name_da:"Braiseret oksekød",name_zh:"红烧牛肉",price:188},
+      {code:"H10",name_da:"Oksekød i gylden suppe",name_zh:"金汤肥牛",price:208},
+      {code:"H11",name_da:"Oksekød i stærk Szechuan-sauce",name_zh:"水煮牛肉",price:188},
+      {code:"H12",name_da:"Oksekød med to slags chili",name_zh:"双椒牛肉",price:188},
+      {code:"H13",name_da:"Oksekød i østerssauce",name_zh:"蚝油牛肉",price:188},
+      {code:"H14",name_da:"Oksekød i rød karry",name_zh:"红咖喱牛肉",price:198}
+    ]},
+    {id:"hovedretter_svinekoed",name_da:"Hovedretter – Svinekød",name_zh:"猪肉",discount:true,items:[
+      {code:"H15",name_da:"Dry wok med Spareribs",name_zh:"干锅排骨",price:188},
+      {code:"H16",name_da:"Dry wok med Svinetarm",name_zh:"干锅肥肠",price:188},
+      {code:"H17",name_da:"Guo Bao med svinekød",name_zh:"锅包肉",price:188},
+      {code:"H18",name_da:"Svinekød i sur sød sauce",name_zh:"菠萝咕咾肉",price:188},
+      {code:"H19",name_da:"Yuxiang svinekød",name_zh:"鱼香肉丝",price:188},
+      {code:"H20",name_da:"Harbin-style dobbeltstegt svinekød",name_zh:"哈香回锅肉",price:188},
+      {code:"H21",name_da:"Sprødt fristurestegt svinekød",name_zh:"溜肉段",price:178},
+      {code:"H22",name_da:"Salt & Pepper svinekød",name_zh:"椒盐猪柳",price:178},
+      {code:"H23",name_da:"Harbin-style braiseret svinekød",name_zh:"哈尔滨坛子红烧肉+鹌鹑蛋",price:198},
+      {code:"H24",name_da:"Máo Xûe Wàng",name_zh:"毛血旺",price:258}
+    ]},
+    {id:"hovedretter_lammekoed",name_da:"Hovedretter – Lammekød",name_zh:"羊肉",discount:true,items:[
+      {code:"H25",name_da:"Lammekød med spidskommen",name_zh:"孜然羊肉",price:198},
+      {code:"H26",name_da:"Hu Nan Lam",name_zh:"湘西羊肉",price:198},
+      {code:"H27",name_da:"Lynstegt lam med forårsløg",name_zh:"葱爆羊肉",price:198}
+    ]},
+    {id:"hovedretter_and",name_da:"Hovedretter – And",name_zh:"鸭肉",discount:true,items:[
+      {code:"H28",name_da:"Dry Pot Boneless Duck",name_zh:"干锅去骨鸭",price:188},
+      {code:"H29",name_da:"Yuiang-sauce på jernpande",name_zh:"鱼香铁板鸭",price:188},
+      {code:"H30",name_da:"Sprødstegt and",name_zh:"香酥鸭",price:178}
+    ]},
+    {id:"hovedretter_rejer",name_da:"Hovedretter – Rejer",name_zh:"虾类",discount:true,items:[
+      {code:"H31",name_da:"Wokstegte rejer med skal",name_zh:"干锅大虾（有壳）",price:198},
+      {code:"H32",name_da:"Sprødstegte te-rejer med skal",name_zh:"茶香虾（有壳）",price:198},
+      {code:"H33",name_da:"Stærk og krydret rejer med skal",name_zh:"香辣一品虾（有壳）",price:198},
+      {code:"H34",name_da:"Lynstegte rejer i lys sauce",name_zh:"清炒虾仁",price:198},
+      {code:"H35",name_da:"Rejer i rød karry",name_zh:"咖喱虾",price:198}
+    ]},
+    {id:"hovedretter_fisk",name_da:"Hovedretter – Fisk",name_zh:"鱼类",discount:true,items:[
+      {code:"H36",name_da:"Harbin grillet fisk (hel fisk med ben)",name_zh:"哈尔滨烤鱼（有骨）",price:288},
+      {code:"H37",name_da:"Chongqing-stil fiskefilet i sennepkålssuppe (uden ben)",name_zh:"重庆酸菜鱼（无骨）",price:228},
+      {code:"H38",name_da:"Sichuan-stil pocheret fisk (uden ben)",name_zh:"沸腾鱼（无骨）",price:238},
+      {code:"H39",name_da:"Fiskefilet i gylden suppe (uden ben)",name_zh:"金汤鱼片（无骨）",price:238},
+      {code:"H40",name_da:"Sprødstegt fisk med sur-sød sauce (hel fisk med ben)",name_zh:"松鼠鱼（有骨）",price:268}
+    ]},
+    {id:"hovedretter_groentsager",name_da:"Hovedretter – Grøntsager",name_zh:"青菜",discount:true,items:[
+      {code:"H41",name_da:"Tørstegt blomkål (Vegetar)",name_zh:"干锅菜花",price:138},
+      {code:"H42",name_da:"Tørstegt marineret lotusrod (Vegetar)",name_zh:"干锅卤藕",price:158},
+      {code:"H43",name_da:"Lynstegte grøntsager med lotusrod og svampe (Vegetar)",name_zh:"荷塘小炒",price:158},
+      {code:"H44",name_da:"Di San Xian (Earth's Three Delights)",name_zh:"地三鲜",price:158},
+      {code:"H45",name_da:"Sichuan-braiseret aubergine med hvidløgssauce (Vegetar)",name_zh:"鱼香茄子",price:158},
+      {code:"H46",name_da:"Mapo Tofu (med oksekød)",name_zh:"麻婆豆腐",price:158},
+      {code:"H47",name_da:"Rød braised Tofu (Vegetar)",name_zh:"红烧豆腐",price:158},
+      {code:"H48",name_da:"Tørstegte grønne bønner (Vegetar)",name_zh:"干煸四季豆",price:158},
+      {code:"H49",name_da:"Wokstegte hvidkål (Vegetar)",name_zh:"手撕包菜",price:138},
+      {code:"H50",name_da:"Kinakål i gylden suppe (Vegetar)",name_zh:"金汤奶白菜",price:158},
+      {code:"H51",name_da:"Lynstegte hvidløgsstængler med fast tofu (Vegetar)",name_zh:"蒜苔炒香干",price:158},
+      {code:"H52",name_da:"Stegt vandspinat med fermenteret rød bønnepasta og tofu (Vegetar)",name_zh:"南乳空心菜",price:148},
+      {code:"H53",name_da:"Stegte pak choi med shiitake-svampe (Vegetar)",name_zh:"香菇扒菜胆",price:148},
+      {code:"H54",name_da:"Lynstegt Pak Choi (Vegetar)",name_zh:"清炒油菜",price:98}
+    ]},
+    {id:"hovedretter_nudler",name_da:"Nudler & Ris",name_zh:"炒面炒饭",discount:true,items:[
+      {code:"N55",name_da:"Stegte nudler/ris/udon/risnudler med oksekød",name_zh:"牛肉炒面/饭/乌冬/河粉",price:138},
+      {code:"N56",name_da:"Stegte nudler/ris/udon/risnudler med kylling",name_zh:"鸡肉炒面/饭/乌冬/河粉",price:138},
+      {code:"N57",name_da:"Stegte nudler/ris/udon/risnudler med rejer",name_zh:"大虾炒面/饭/乌冬/河粉",price:138},
+      {code:"N58",name_da:"Vegetar stegte nudler/ris/udon/risnudler",name_zh:"素炒面/饭/乌冬/河粉",price:128}
+    ]},
+    {id:"sauce",name_da:"Sauce",name_zh:"酱汁",discount:false,items:[
+      {code:"S55",name_da:"Chili olie",name_zh:"油泼辣椒",price:25},
+      {code:"S56",name_da:"Sød og sur sauce",name_zh:"酸甜酱",price:25},
+      {code:"S57",name_da:"Dumpling dip",name_zh:"饺子醋",price:15},
+      {code:"S58",name_da:"Chilimayo",name_zh:"辣味蛋黄酱",price:15},
+      {code:"S59",name_da:"Mayo",name_zh:"标准蛋黄酱",price:15},
+      {code:"S60",name_da:"Sriracha",name_zh:"泰式是拉差辣酱",price:15}
+    ]},
+    {id:"drikkekort",name_da:"Drikkevarer",name_zh:"饮品",discount:false,items:[
+      {code:"V61",name_da:"Kinesisk drik",name_zh:"茶派",price:49},
+      {code:"V62",name_da:"Sodavand",name_zh:"碳酸饮料",price:29},
+      {code:"V63",name_da:"Still water",name_zh:"无泡矿泉水",price:25},
+      {code:"V64",name_da:"San Pellegrino",name_zh:"巴黎水",price:60},
+      {code:"V65",name_da:"Dansk øl",name_zh:"嘉士伯啤酒",price:39},
+      {code:"V66",name_da:"Kinesisk øl Tsingtao",name_zh:"青岛啤酒",price:49},
+      {code:"V67",name_da:"Japansk øl Sapporo",name_zh:"日本三宝乐啤酒",price:49},
+      {code:"V68",name_da:"Koreansk Soju Peach/grape 13,0%",name_zh:"韩国烧酒",price:129},
+      {code:"V69",name_da:"Rødvin (glas)",name_zh:"红酒 (杯)",price:69},
+      {code:"V69-F",name_da:"Rødvin (flaske)",name_zh:"红酒 (瓶)",price:219},
+      {code:"V70",name_da:"Hvidvin (glas)",name_zh:"白葡萄酒 (杯)",price:69},
+      {code:"V70-F",name_da:"Hvidvin (flaske)",name_zh:"白葡萄酒 (瓶)",price:219},
+      {code:"V71",name_da:"Danskvand 50cl",name_zh:"气泡水",price:49},
+      {code:"V72",name_da:"Lemonade 50cl",name_zh:"柠檬水",price:59}
+    ]}
+  ];
+
+  const modal = document.getElementById('menuModal');
+  const modalTitle = document.getElementById('modalTitle');
+  const modalTitleCn = document.getElementById('modalTitleCn');
+  const modalBody = document.getElementById('modalBody');
+  const modalClose = document.getElementById('modalClose');
+
+  document.querySelectorAll('.menu-card').forEach(card => {
+    card.addEventListener('click', () => {
+      const catId = card.dataset.cat;
+      const cat = MENU.find(c => c.id === catId);
+      if (!cat) return;
+      modalTitle.textContent = cat.name_da;
+      modalTitleCn.textContent = cat.name_zh;
+      modalBody.innerHTML = cat.items.map(item => {
+        const takeawayPrice = cat.discount ? Math.round(item.price * 0.9) : null;
+        return `
+          <div class="dish-item">
+            <div class="dish-info">
+              <div class="dish-name">${item.name_da}</div>
+              <div class="dish-name-cn">${item.name_zh}</div>
+            </div>
+            <div class="dish-price-col">
+              <div class="dish-price">${item.price} kr</div>
+              ${takeawayPrice ? `<div class="dish-takeaway">Takeaway ${takeawayPrice} kr</div>` : ''}
+            </div>
+          </div>`;
+      }).join('');
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    });
+  });
+
+  function closeModal() {
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+  modalClose.addEventListener('click', closeModal);
+  modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 </script>
 
 </body>
