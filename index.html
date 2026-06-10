@@ -457,6 +457,26 @@
       text-align: center;
     }
     .modal-footer .btn-red { font-size: 13px; padding: 12px 28px; }
+
+    .dish-item.has-img {
+      flex-wrap: wrap;
+      padding: 16px 28px;
+      cursor: default;
+    }
+    .dish-item.has-img:hover { background: var(--cream); }
+    .dish-img {
+      width: 100%; height: 200px; border-radius: 12px;
+      background-size: cover; background-position: center;
+      margin-bottom: 10px; cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .dish-img:hover { transform: scale(1.02); }
+    .dish-desc {
+      font-size: 12px; color: var(--text-light); line-height: 1.4;
+      margin-top: 3px;
+    }
+    .spice { font-size: 11px; margin-left: 4px; }
+    .dish-item:not(.has-img) .dish-info { flex: 1; }
   </style>
 </head>
 <body>
@@ -662,141 +682,141 @@
   });
 
   // ═══ Menu Modal ═══
-  const MENU = [
-    {id:"forretter",name_da:"Forretter",name_zh:"前菜",discount:true,items:[
-      {code:"F1",name_da:"Snackkurv (til 2 personer)",name_zh:"前餐拼盘",price:128},
-      {code:"F2",name_da:"Mini forårsruller 6stk.",name_zh:"小春卷6个",price:48},
-      {code:"F3",name_da:"Hjemmelavede forårsruller med oksekød 4 stk.",name_zh:"牛肉春卷4个",price:58},
-      {code:"F4",name_da:"Hjemmelavede forårsruller med and 3 stk.",name_zh:"鸭春卷3个",price:58},
-      {code:"F5",name_da:"Dybstegte Tempura Rejer 4stk.",name_zh:"日本炸虾4个",price:58},
-      {code:"F6",name_da:"Kyllinge nuggets 6 stk",name_zh:"炸鸡块6块",price:58},
-      {code:"F7",name_da:"Dybstegte dumplings med kylling 5stk",name_zh:"炸鸡肉饺子5个",price:58},
-      {code:"F8",name_da:"Hjemmelavede dumplings i chiliolie",name_zh:"红油水饺4个",price:58},
-      {code:"F9",name_da:"Kogte Harbin-dumplings 10stk.",name_zh:"东北水饺10个",price:128},
-      {code:"F10",name_da:"Rejer Chips",name_zh:"虾片",price:18}
-    ]},
-    {id:"dagens_suppe",name_da:"Dagens Suppe",name_zh:"餐前汤",discount:true,items:[
-      {code:"S1",name_da:"Peking suppe",name_zh:"北京汤",price:58},
-      {code:"S2",name_da:"Kylling suppe",name_zh:"鸡丝汤",price:58},
-      {code:"S3",name_da:"Wonton suppe",name_zh:"云吞汤",price:58},
-      {code:"S4",name_da:"Majssuppe med kylling stykker",name_zh:"鸡蛋玉米羹",price:58}
-    ]},
-    {id:"dum",name_da:"Dim Sum",name_zh:"点心",discount:true,items:[
-      {code:"D1",name_da:"Char Siu Bao 3stk.",name_zh:"叉烧包3个",price:58},
-      {code:"D2",name_da:"Siu Mai 4stk.",name_zh:"烧卖4个",price:58},
-      {code:"D3",name_da:"Har Gow 4stk.",name_zh:"虾饺4个",price:58},
-      {code:"D4",name_da:"Sesamboller 5stk.",name_zh:"芝麻球5个",price:58}
-    ]},
-    {id:"kold_rette",name_da:"Kold Rette",name_zh:"冷盘",discount:true,items:[
-      {code:"K1",name_da:"Special edamame",name_zh:"醉香毛豆",price:38},
-      {code:"K2",name_da:"Kimchi kinakål",name_zh:"辣白菜",price:58},
-      {code:"K3",name_da:"Agurk strimler med citron sauce",name_zh:"柠檬黄瓜条",price:58},
-      {code:"K4",name_da:"Fuqi Feipian",name_zh:"夫妻肺片",price:148},
-      {code:"K5",name_da:"Oksemave salad i chilioil",name_zh:"红油牛肚",price:148},
-      {code:"K6",name_da:"Okse-tripe salat i chili sauce",name_zh:"凉拌牛百叶",price:148},
-      {code:"K7",name_da:"Kylling med citron sauce",name_zh:"柠檬鸡",price:138}
-    ]},
-    {id:"hovedretter_kylling",name_da:"Hovedretter – Kylling",name_zh:"鸡肉",discount:true,items:[
-      {code:"H1",name_da:"Dry wok med kylling",name_zh:"干锅鸡",price:168},
-      {code:"H2",name_da:"Gong Bao Kylling",name_zh:"宫保鸡丁",price:168},
-      {code:"H3",name_da:"Kylling i sur sød sauce",name_zh:"甜酸鸡",price:168},
-      {code:"H4",name_da:"Kylling a la Harbin",name_zh:"哈尔滨辣子鸡",price:168},
-      {code:"H5",name_da:"Lynstegt kylling i østerssauce",name_zh:"蚝油鸡片",price:168},
-      {code:"H6",name_da:"Kylling i rød Karry",name_zh:"红咖喱鸡",price:168}
-    ]},
-    {id:"hovedretter_oksekoed",name_da:"Hovedretter – Oksekød",name_zh:"牛肉",discount:true,items:[
-      {code:"H7",name_da:"Dry wok med oksekød",name_zh:"干锅牛肉",price:188},
-      {code:"H8",name_da:"Oksekød i sort peber sauce på jernfad",name_zh:"铁板黑椒牛肉",price:188},
-      {code:"H9",name_da:"Braiseret oksekød",name_zh:"红烧牛肉",price:188},
-      {code:"H10",name_da:"Oksekød i gylden suppe",name_zh:"金汤肥牛",price:208},
-      {code:"H11",name_da:"Oksekød i stærk Szechuan-sauce",name_zh:"水煮牛肉",price:188},
-      {code:"H12",name_da:"Oksekød med to slags chili",name_zh:"双椒牛肉",price:188},
-      {code:"H13",name_da:"Oksekød i østerssauce",name_zh:"蚝油牛肉",price:188},
-      {code:"H14",name_da:"Oksekød i rød karry",name_zh:"红咖喱牛肉",price:198}
-    ]},
-    {id:"hovedretter_svinekoed",name_da:"Hovedretter – Svinekød",name_zh:"猪肉",discount:true,items:[
-      {code:"H15",name_da:"Dry wok med Spareribs",name_zh:"干锅排骨",price:188},
-      {code:"H16",name_da:"Dry wok med Svinetarm",name_zh:"干锅肥肠",price:188},
-      {code:"H17",name_da:"Guo Bao med svinekød",name_zh:"锅包肉",price:188},
-      {code:"H18",name_da:"Svinekød i sur sød sauce",name_zh:"菠萝咕咾肉",price:188},
-      {code:"H19",name_da:"Yuxiang svinekød",name_zh:"鱼香肉丝",price:188},
-      {code:"H20",name_da:"Harbin-style dobbeltstegt svinekød",name_zh:"哈香回锅肉",price:188},
-      {code:"H21",name_da:"Sprødt fristurestegt svinekød",name_zh:"溜肉段",price:178},
-      {code:"H22",name_da:"Salt & Pepper svinekød",name_zh:"椒盐猪柳",price:178},
-      {code:"H23",name_da:"Harbin-style braiseret svinekød",name_zh:"哈尔滨坛子红烧肉+鹌鹑蛋",price:198},
-      {code:"H24",name_da:"Máo Xûe Wàng",name_zh:"毛血旺",price:258}
-    ]},
-    {id:"hovedretter_lammekoed",name_da:"Hovedretter – Lammekød",name_zh:"羊肉",discount:true,items:[
-      {code:"H25",name_da:"Lammekød med spidskommen",name_zh:"孜然羊肉",price:198},
-      {code:"H26",name_da:"Hu Nan Lam",name_zh:"湘西羊肉",price:198},
-      {code:"H27",name_da:"Lynstegt lam med forårsløg",name_zh:"葱爆羊肉",price:198}
-    ]},
-    {id:"hovedretter_and",name_da:"Hovedretter – And",name_zh:"鸭肉",discount:true,items:[
-      {code:"H28",name_da:"Dry Pot Boneless Duck",name_zh:"干锅去骨鸭",price:188},
-      {code:"H29",name_da:"Yuiang-sauce på jernpande",name_zh:"鱼香铁板鸭",price:188},
-      {code:"H30",name_da:"Sprødstegt and",name_zh:"香酥鸭",price:178}
-    ]},
-    {id:"hovedretter_rejer",name_da:"Hovedretter – Rejer",name_zh:"虾类",discount:true,items:[
-      {code:"H31",name_da:"Wokstegte rejer med skal",name_zh:"干锅大虾（有壳）",price:198},
-      {code:"H32",name_da:"Sprødstegte te-rejer med skal",name_zh:"茶香虾（有壳）",price:198},
-      {code:"H33",name_da:"Stærk og krydret rejer med skal",name_zh:"香辣一品虾（有壳）",price:198},
-      {code:"H34",name_da:"Lynstegte rejer i lys sauce",name_zh:"清炒虾仁",price:198},
-      {code:"H35",name_da:"Rejer i rød karry",name_zh:"咖喱虾",price:198}
-    ]},
-    {id:"hovedretter_fisk",name_da:"Hovedretter – Fisk",name_zh:"鱼类",discount:true,items:[
-      {code:"H36",name_da:"Harbin grillet fisk (hel fisk med ben)",name_zh:"哈尔滨烤鱼（有骨）",price:288},
-      {code:"H37",name_da:"Chongqing-stil fiskefilet i sennepkålssuppe (uden ben)",name_zh:"重庆酸菜鱼（无骨）",price:228},
-      {code:"H38",name_da:"Sichuan-stil pocheret fisk (uden ben)",name_zh:"沸腾鱼（无骨）",price:238},
-      {code:"H39",name_da:"Fiskefilet i gylden suppe (uden ben)",name_zh:"金汤鱼片（无骨）",price:238},
-      {code:"H40",name_da:"Sprødstegt fisk med sur-sød sauce (hel fisk med ben)",name_zh:"松鼠鱼（有骨）",price:268}
-    ]},
-    {id:"hovedretter_groentsager",name_da:"Hovedretter – Grøntsager",name_zh:"青菜",discount:true,items:[
-      {code:"H41",name_da:"Tørstegt blomkål (Vegetar)",name_zh:"干锅菜花",price:138},
-      {code:"H42",name_da:"Tørstegt marineret lotusrod (Vegetar)",name_zh:"干锅卤藕",price:158},
-      {code:"H43",name_da:"Lynstegte grøntsager med lotusrod og svampe (Vegetar)",name_zh:"荷塘小炒",price:158},
-      {code:"H44",name_da:"Di San Xian (Earth's Three Delights)",name_zh:"地三鲜",price:158},
-      {code:"H45",name_da:"Sichuan-braiseret aubergine med hvidløgssauce (Vegetar)",name_zh:"鱼香茄子",price:158},
-      {code:"H46",name_da:"Mapo Tofu (med oksekød)",name_zh:"麻婆豆腐",price:158},
-      {code:"H47",name_da:"Rød braised Tofu (Vegetar)",name_zh:"红烧豆腐",price:158},
-      {code:"H48",name_da:"Tørstegte grønne bønner (Vegetar)",name_zh:"干煸四季豆",price:158},
-      {code:"H49",name_da:"Wokstegte hvidkål (Vegetar)",name_zh:"手撕包菜",price:138},
-      {code:"H50",name_da:"Kinakål i gylden suppe (Vegetar)",name_zh:"金汤奶白菜",price:158},
-      {code:"H51",name_da:"Lynstegte hvidløgsstængler med fast tofu (Vegetar)",name_zh:"蒜苔炒香干",price:158},
-      {code:"H52",name_da:"Stegt vandspinat med fermenteret rød bønnepasta og tofu (Vegetar)",name_zh:"南乳空心菜",price:148},
-      {code:"H53",name_da:"Stegte pak choi med shiitake-svampe (Vegetar)",name_zh:"香菇扒菜胆",price:148},
-      {code:"H54",name_da:"Lynstegt Pak Choi (Vegetar)",name_zh:"清炒油菜",price:98}
-    ]},
-    {id:"hovedretter_nudler",name_da:"Nudler & Ris",name_zh:"炒面炒饭",discount:true,items:[
-      {code:"N55",name_da:"Stegte nudler/ris/udon/risnudler med oksekød",name_zh:"牛肉炒面/饭/乌冬/河粉",price:138},
-      {code:"N56",name_da:"Stegte nudler/ris/udon/risnudler med kylling",name_zh:"鸡肉炒面/饭/乌冬/河粉",price:138},
-      {code:"N57",name_da:"Stegte nudler/ris/udon/risnudler med rejer",name_zh:"大虾炒面/饭/乌冬/河粉",price:138},
-      {code:"N58",name_da:"Vegetar stegte nudler/ris/udon/risnudler",name_zh:"素炒面/饭/乌冬/河粉",price:128}
-    ]},
-    {id:"sauce",name_da:"Sauce",name_zh:"酱汁",discount:false,items:[
-      {code:"S55",name_da:"Chili olie",name_zh:"油泼辣椒",price:25},
-      {code:"S56",name_da:"Sød og sur sauce",name_zh:"酸甜酱",price:25},
-      {code:"S57",name_da:"Dumpling dip",name_zh:"饺子醋",price:15},
-      {code:"S58",name_da:"Chilimayo",name_zh:"辣味蛋黄酱",price:15},
-      {code:"S59",name_da:"Mayo",name_zh:"标准蛋黄酱",price:15},
-      {code:"S60",name_da:"Sriracha",name_zh:"泰式是拉差辣酱",price:15}
-    ]},
-    {id:"drikkekort",name_da:"Drikkevarer",name_zh:"饮品",discount:false,items:[
-      {code:"V61",name_da:"Kinesisk drik",name_zh:"茶派",price:49},
-      {code:"V62",name_da:"Sodavand",name_zh:"碳酸饮料",price:29},
-      {code:"V63",name_da:"Still water",name_zh:"无泡矿泉水",price:25},
-      {code:"V64",name_da:"San Pellegrino",name_zh:"巴黎水",price:60},
-      {code:"V65",name_da:"Dansk øl",name_zh:"嘉士伯啤酒",price:39},
-      {code:"V66",name_da:"Kinesisk øl Tsingtao",name_zh:"青岛啤酒",price:49},
-      {code:"V67",name_da:"Japansk øl Sapporo",name_zh:"日本三宝乐啤酒",price:49},
-      {code:"V68",name_da:"Koreansk Soju Peach/grape 13,0%",name_zh:"韩国烧酒",price:129},
-      {code:"V69",name_da:"Rødvin (glas)",name_zh:"红酒 (杯)",price:69},
-      {code:"V69-F",name_da:"Rødvin (flaske)",name_zh:"红酒 (瓶)",price:219},
-      {code:"V70",name_da:"Hvidvin (glas)",name_zh:"白葡萄酒 (杯)",price:69},
-      {code:"V70-F",name_da:"Hvidvin (flaske)",name_zh:"白葡萄酒 (瓶)",price:219},
-      {code:"V71",name_da:"Danskvand 50cl",name_zh:"气泡水",price:49},
-      {code:"V72",name_da:"Lemonade 50cl",name_zh:"柠檬水",price:59}
-    ]}
-  ];
+const MENU = [
+  {id:"forretter",name_da:"Forretter",name_zh:"前菜",discount:true,items:[
+    {code:"F1",name_da:"Snackkurv (til 2 personer)",name_zh:"前餐拼盘",price:128,desc:"4stk mini forårsruller, 4stk Tempura Rejer, 4 Dybstegte dumplings med kylling og rejer chips",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/05/F2-768x404.jpg",spice:0},
+    {code:"F2",name_da:"Mini forårsruller 6stk.",name_zh:"小春卷6个",price:48,desc:"Vegetarisk",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/05/F3-768x400.jpg",spice:0},
+    {code:"F3",name_da:"Hjemmelavede forårsruller med oksekød 4 stk.",name_zh:"牛肉春卷4个",price:58,desc:"Hakket oksekød og hvidkål",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/05/F4-768x744.png",spice:0},
+    {code:"F4",name_da:"Hjemmelavede forårsruller med and 3 stk.",name_zh:"鸭春卷3个",price:58,desc:"Hakket and og hvidkål",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/05/F5.webp",spice:0},
+    {code:"F5",name_da:"Dybstegte Tempura Rejer 4stk.",name_zh:"日本炸虾4个",price:58,desc:"",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/05/F6-768x575.jpg",spice:0},
+    {code:"F6",name_da:"Kyllinge nuggets 6 stk",name_zh:"炸鸡块6块",price:58,desc:"",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/05/F7-768x656.png",spice:0},
+    {code:"F7",name_da:"Dybstegte dumplings med kylling 5stk",name_zh:"炸鸡肉饺子5个",price:58,desc:"",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/05/F8.jpg",spice:0},
+    {code:"F8",name_da:"Hjemmelavede dumplings i chiliolie",name_zh:"红油水饺4个",price:58,desc:"Hakket svinekød og purløg",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/05/F9-768x575.jpg",spice:1},
+    {code:"F9",name_da:"Kogte Harbin-dumplings 10stk.",name_zh:"东北水饺10个",price:128,desc:"Hakket svinekød og purløg",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/03/F05-768x432.jpg",spice:0},
+    {code:"F10",name_da:"Rejer Chips",name_zh:"虾片",price:18,desc:"",img:"",spice:0}
+  ]},
+  {id:"dagens_suppe",name_da:"Dagens Suppe",name_zh:"餐前汤",discount:true,items:[
+    {code:"S1",name_da:"Peking suppe",name_zh:"北京汤",price:58,desc:"And, bambusskud og vandkastanjer. Sur, sød og lidt stærk",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/05/S1-768x768.jpg",spice:1},
+    {code:"S2",name_da:"Kylling suppe",name_zh:"鸡丝汤",price:58,desc:"Kyling og svampe",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/05/S2-768x768.jpg",spice:0},
+    {code:"S3",name_da:"Wonton suppe",name_zh:"云吞汤",price:58,desc:"Svinekød fyld",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/05/S3-768x768.jpg",spice:0},
+    {code:"S4",name_da:"Majssuppe med kylling stykker",name_zh:"鸡蛋玉米羹",price:58,desc:"Majssuppe med kylling stykker",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/05/S4-768x768.jpg",spice:0}
+  ]},
+  {id:"dum",name_da:"Dim Sum",name_zh:"点心",discount:true,items:[
+    {code:"D1",name_da:"Char Siu Bao 3stk.",name_zh:"叉烧包3个",price:58,desc:"Sødt BBQ svinekød fyld",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/05/微信图片_20260512215731_258_948-768x802.jpg",spice:0},
+    {code:"D2",name_da:"Siu Mai 4stk.",name_zh:"烧卖4个",price:58,desc:"Svinekød og svampe fyld",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/03/D14-768x432.png",spice:0},
+    {code:"D3",name_da:"Har Gow 4stk.",name_zh:"虾饺4个",price:58,desc:"Rejer og bambusskud fyld",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/03/D15-768x432.png",spice:0},
+    {code:"D4",name_da:"Sesamboller 5stk.",name_zh:"芝麻球5个",price:58,desc:"Sesam med rød bønne fyld",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/03/D16-768x433.jpg",spice:0}
+  ]},
+  {id:"kold_rette",name_da:"Kold Rette",name_zh:"冷盘",discount:true,items:[
+    {code:"K1",name_da:"Special edamame",name_zh:"醉香毛豆",price:38,desc:"Kogt i speciel kinesisk vin",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/05/K1-768x768.jpg",spice:0},
+    {code:"K2",name_da:"Kimchi kinakål",name_zh:"辣白菜",price:58,desc:"Krydret kinakål",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/05/K2-768x651.jpg",spice:2},
+    {code:"K3",name_da:"Agurk strimler med citron sauce",name_zh:"柠檬黄瓜条",price:58,desc:"Agurk",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/05/K3_副本-768x614.jpg",spice:0},
+    {code:"K4",name_da:"Fuqi Feipian",name_zh:"夫妻肺片",price:148,desc:"Tyndtskåret oksetripe, oksetunge, oksehjerte, oksemave med koriander og forårsløg",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/05/K4-768x768.jpg",spice:2},
+    {code:"K5",name_da:"Oksemave salad i chilioil",name_zh:"红油牛肚",price:148,desc:"",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/05/K5-768x665.jpg",spice:1},
+    {code:"K6",name_da:"Okse-tripe salat i chili sauce",name_zh:"凉拌牛百叶",price:148,desc:"",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/05/K6-768x768.jpg",spice:1},
+    {code:"K7",name_da:"Kylling med citron sauce",name_zh:"柠檬鸡",price:138,desc:"",img:"",spice:0}
+  ]},
+  {id:"hovedretter_kylling",name_da:"Hovedretter – Kylling",name_zh:"鸡肉",discount:true,items:[
+    {code:"H1",name_da:"Dry wok med kylling",name_zh:"干锅鸡",price:168,desc:"Tørstegt kylling med bladselleri, svampe, rød og grøn peberfrugt",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/05/H1-768x768.jpg",spice:1},
+    {code:"H2",name_da:"Gong Bao Kylling",name_zh:"宫保鸡丁",price:168,desc:"Stegt kyllingetern, jordnødder og tørret chili. Sød, sur og lidt stærk",img:"",spice:1},
+    {code:"H3",name_da:"Kylling i sur sød sauce",name_zh:"甜酸鸡",price:168,desc:"Kyllingekød, peberfrugt og ananas i sur sød sauce",img:"",spice:0},
+    {code:"H4",name_da:"Kylling a la Harbin",name_zh:"哈尔滨辣子鸡",price:168,desc:"Stærk og aromatisk. Kyllingelår og tørret chili",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/05/H4-768x768.jpg",spice:2},
+    {code:"H5",name_da:"Lynstegt kylling i østerssauce",name_zh:"蚝油鸡片",price:168,desc:"Lynstegt kylling med østerssauce og sæsonens grøntsager",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/05/H5-768x768.jpg",spice:0},
+    {code:"H6",name_da:"Kylling i rød Karry",name_zh:"红咖喱鸡",price:168,desc:"Krydret og cremet. Kylling, rød karry, kokosmælk, broccoli, peberfrugt",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/05/H6-768x768.jpg",spice:1}
+  ]},
+  {id:"hovedretter_oksekoed",name_da:"Hovedretter – Oksekød",name_zh:"牛肉",discount:true,items:[
+    {code:"H7",name_da:"Dry wok med oksekød",name_zh:"干锅牛肉",price:188,desc:"Tørstegt oksekød med bladselleri, svampe, rød og grøn peberfrugt",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/05/H7-1-768x768.jpg",spice:2},
+    {code:"H8",name_da:"Oksekød i sort peber sauce på jernfad",name_zh:"铁板黑椒牛肉",price:188,desc:"Stegt oksekød, peberfrugt, løg, sort peber sauce. Serveres i jernfad",img:"",spice:0},
+    {code:"H9",name_da:"Braiseret oksekød",name_zh:"红烧牛肉",price:188,desc:"Stegt oksekød og kartoffel. Fyldig og salt",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/05/H9-768x768.jpg",spice:0},
+    {code:"H10",name_da:"Oksekød i gylden suppe",name_zh:"金汤肥牛",price:208,desc:"Oksekød vendt i en gylden chili suppe med agurk, broccoli og enoki-svampe",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/05/H10-768x768.jpg",spice:1},
+    {code:"H11",name_da:"Oksekød i stærk Szechuan-sauce",name_zh:"水煮牛肉",price:188,desc:"Kogt oksekød og kinakål i stærk Szechuan sauce",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/05/H11-768x768.jpg",spice:3},
+    {code:"H12",name_da:"Oksekød med to slags chili",name_zh:"双椒牛肉",price:188,desc:"Stegt oksekød strimler med friske chili og forårsløg",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/05/H12-768x768.jpg",spice:2},
+    {code:"H13",name_da:"Oksekød i østerssauce",name_zh:"蚝油牛肉",price:188,desc:"Stegt oksekød med peberfrugt og løg i østerssauce",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/05/H13-768x768.jpg",spice:0},
+    {code:"H14",name_da:"Oksekød i rød karry",name_zh:"红咖喱牛肉",price:198,desc:"Oksekød i rød karry med kokosmælk, broccoli og peberfrugt",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/05/H14-768x768.jpg",spice:1}
+  ]},
+  {id:"hovedretter_svinekoed",name_da:"Hovedretter – Svinekød",name_zh:"猪肉",discount:true,items:[
+    {code:"H15",name_da:"Dry wok med Spareribs",name_zh:"干锅排骨",price:188,desc:"Tørstegt spareribs med bladselleri, svampe, rød og grøn peberfrugt",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/05/H15-768x768.jpg",spice:1},
+    {code:"H16",name_da:"Dry wok med Svinetarm",name_zh:"干锅肥肠",price:188,desc:"Tørstegt svinetarm med bladselleri, svampe, rød og grøn peberfrugt",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/05/H16-768x768.jpg",spice:1},
+    {code:"H17",name_da:"Guo Bao med svinekød",name_zh:"锅包肉",price:188,desc:"Sprødstegt svinekød med sur-sød sauce",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/05/H17-768x768.jpg",spice:0},
+    {code:"H18",name_da:"Svinekød i sur sød sauce",name_zh:"菠萝咕咾肉",price:188,desc:"Sprødstegt svinekød med frisk ananas og peberfrugt i sur-sød sauce",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/05/H18-768x768.jpg",spice:0},
+    {code:"H19",name_da:"Yuxiang svinekød",name_zh:"鱼香肉丝",price:188,desc:"Stegt svinekød med trøffel, bambusskud og peberfrugt i sur-sød sauce",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/05/H19-768x768.jpg",spice:1},
+    {code:"H20",name_da:"Harbin-style dobbeltstegt svinekød",name_zh:"哈香回锅肉",price:188,desc:"Harbin-stil dobbeltstegt svinekød med peberfrugt og løg",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/05/H20-768x768.jpg",spice:1},
+    {code:"H21",name_da:"Sprødt fristurestegt svinekød",name_zh:"溜肉段",price:178,desc:"Sprødstegt svinekød stykker med peberfrugt",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/05/H21-768x768.jpg",spice:0},
+    {code:"H22",name_da:"Salt & Pepper svinekød",name_zh:"椒盐猪柳",price:178,desc:"Stegt svinekød strimler",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/05/H22-768x768.jpg",spice:0},
+    {code:"H23",name_da:"Harbin-style braiseret svinekød",name_zh:"哈尔滨坛子红烧肉+鹌鹑蛋",price:198,desc:"Harbin-stil braiseret svinekød med vagtteleæg, Shaoxing vin og sojasovs",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/05/H23-768x768.jpg",spice:0},
+    {code:"H24",name_da:"Máo Xûe Wàng",name_zh:"毛血旺",price:258,desc:"Klassisk Szechuan stærk gryde med andeblod, oksemave og grøntsager",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/05/H24-768x768.jpg",spice:3}
+  ]},
+  {id:"hovedretter_lammekoed",name_da:"Hovedretter – Lammekød",name_zh:"羊肉",discount:true,items:[
+    {code:"H25",name_da:"Lammekød med spidskommen",name_zh:"孜然羊肉",price:198,desc:"Stegt lam med spidskommen, løg, koriander og chili",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/05/H25-768x768.jpg",spice:1},
+    {code:"H26",name_da:"Hu Nan Lam",name_zh:"湘西羊肉",price:198,desc:"Lam med bladselleri, koriander og tørret chili",img:"",spice:2},
+    {code:"H27",name_da:"Lynstegt lam med forårsløg",name_zh:"葱爆羊肉",price:198,desc:"Lynstegt lam med forårsløg og koriander",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/05/H27-768x768.jpg",spice:0}
+  ]},
+  {id:"hovedretter_and",name_da:"Hovedretter – And",name_zh:"鸭肉",discount:true,items:[
+    {code:"H28",name_da:"Dry Pot Boneless Duck",name_zh:"干锅去骨鸭",price:188,desc:"Smagfuld og salt. And, bladselleri, svampe, peberfrugt",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/05/H28-768x768.jpg",spice:1},
+    {code:"H29",name_da:"Yuiang-sauce på jernpande",name_zh:"鱼香铁板鸭",price:188,desc:"Jernpande and med grøntsager i sur-sød lidt stærk sauce",img:"",spice:0},
+    {code:"H30",name_da:"Sprødstegt and",name_zh:"香酥鸭",price:178,desc:"Sprødstegt and med løg og svampesauce",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/05/H30-768x768.jpg",spice:0}
+  ]},
+  {id:"hovedretter_rejer",name_da:"Hovedretter – Rejer",name_zh:"虾类",discount:true,items:[
+    {code:"H31",name_da:"Wokstegte rejer med skal",name_zh:"干锅大虾（有壳）",price:198,desc:"Wokstegte rejer med bladselleri, svampe, rød og gul peberfrugt",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/05/H31-768x768.jpg",spice:1},
+    {code:"H32",name_da:"Sprødstegte te-rejer med skal",name_zh:"茶香虾（有壳）",price:198,desc:"Sprødstegte rejer med teblade",img:"",spice:0},
+    {code:"H33",name_da:"Stærk og krydret rejer med skal",name_zh:"香辣一品虾（有壳）",price:198,desc:"Rejer i stærk sauce",img:"",spice:2},
+    {code:"H34",name_da:"Lynstegte rejer i lys sauce",name_zh:"清炒虾仁",price:198,desc:"Håndskallede rejer med gulerod og agurk",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/05/H34-768x768.jpg",spice:0},
+    {code:"H35",name_da:"Rejer i rød karry",name_zh:"咖喱虾",price:198,desc:"Håndskallede rejer med svampe i rød karry sauce",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/05/H35-768x768.jpg",spice:1}
+  ]},
+  {id:"hovedretter_fisk",name_da:"Hovedretter – Fisk",name_zh:"鱼类",discount:true,items:[
+    {code:"H36",name_da:"Harbin grillet fisk (hel fisk med ben)",name_zh:"哈尔滨烤鱼（有骨）",price:288,desc:"Hel grillet fisk med bouillon, agurk, lotusrod og tofu",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/05/H36-768x768.jpg",spice:1},
+    {code:"H37",name_da:"Chongqing-stil fiskefilet i sennepkålssuppe (uden ben)",name_zh:"重庆酸菜鱼（无骨）",price:228,desc:"Fiskefilet i syrlig sennepkålssuppe",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/05/H37-768x768.jpg",spice:0},
+    {code:"H38",name_da:"Sichuan-stil pocheret fisk (uden ben)",name_zh:"沸腾鱼（无骨）",price:238,desc:"Fiskefilet med bønnespirer og kinakål i stærk chili olie",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/05/H38-768x768.jpg",spice:3},
+    {code:"H39",name_da:"Fiskefilet i gylden suppe (uden ben)",name_zh:"金汤鱼片（无骨）",price:238,desc:"Fiskefilet med broccoli, agurk og enoki-svampe i gylden bouillon",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/05/H39-768x768.jpg",spice:1},
+    {code:"H40",name_da:"Sprødstegt fisk med sur-sød sauce (hel fisk med ben)",name_zh:"松鼠鱼（有骨）",price:268,desc:"Sprødstegt hel fisk med klassisk sur-sød sauce",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/05/H40-768x768.jpg",spice:0}
+  ]},
+  {id:"hovedretter_groentsager",name_da:"Hovedretter – Grøntsager",name_zh:"青菜",discount:true,items:[
+    {code:"H41",name_da:"Tørstegt blomkål (Vegetar)",name_zh:"干锅菜花",price:138,desc:"Tørstegt blomkål med bladselleri, svampe, grøn og rød peberfrugt",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/05/H41-768x768.jpg",spice:1},
+    {code:"H42",name_da:"Tørstegt marineret lotusrod (Vegetar)",name_zh:"干锅卤藕",price:158,desc:"Tørstegt lotusrod med bladselleri, svampe, grøn og rød peberfrugt",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/05/H42-768x768.jpg",spice:1},
+    {code:"H43",name_da:"Lynstegte grøntsager med lotusrod og svampe (Vegetar)",name_zh:"荷塘小炒",price:158,desc:"Lynstegt lotusrod med sukkerærter og sæsonens grøntsager",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/05/H43-768x768.jpg",spice:0},
+    {code:"H44",name_da:"Di San Xian (Earth's Three Delights)",name_zh:"地三鲜",price:158,desc:"Stegt aubergine, kartofler og grøn peberfrugt",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/05/H44-768x768.jpg",spice:0},
+    {code:"H45",name_da:"Sichuan-braiseret aubergine med hvidløgssauce (Vegetar)",name_zh:"鱼香茄子",price:158,desc:"Aubergine med chili i sur-sød hvidløgssauce",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/05/H45-768x768.jpg",spice:0},
+    {code:"H46",name_da:"Mapo Tofu (med oksekød)",name_zh:"麻婆豆腐",price:158,desc:"Stærkt krydret tofu med hakket oksekød og aromatisk Sichuan sauce",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/05/H46-768x768.jpg",spice:2},
+    {code:"H47",name_da:"Rød braised Tofu (Vegetar)",name_zh:"红烧豆腐",price:158,desc:"Klassisk tofu med shiitake og sæsonens grøntsager",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/05/H47-768x768.jpg",spice:0},
+    {code:"H48",name_da:"Tørstegte grønne bønner (Vegetar)",name_zh:"干煸四季豆",price:158,desc:"Tørstegt grønne bønner med kinesisk oliven-relish og tørret chili",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/05/H48-768x768.jpg",spice:1},
+    {code:"H49",name_da:"Wokstegte hvidkål (Vegetar)",name_zh:"手撕包菜",price:138,desc:"Wokstegt hvidkål med hvidløg, sort eddike og tørret chili",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/05/H49-768x768.jpg",spice:1},
+    {code:"H50",name_da:"Kinakål i gylden suppe (Vegetar)",name_zh:"金汤奶白菜",price:158,desc:"Kinakål med sorte svampe i gylden suppe",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/05/H50-768x768.jpg",spice:0},
+    {code:"H51",name_da:"Lynstegte hvidløgsstængler med fast tofu (Vegetar)",name_zh:"蒜苔炒香干",price:158,desc:"Lynstegte hvidløgsspirer med røget tofu og sorte bønner",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/05/H51-768x768.jpg",spice:0},
+    {code:"H52",name_da:"Stegt vandspinat med fermenteret rød bønnepasta og tofu (Vegetar)",name_zh:"南乳空心菜",price:148,desc:"Stegt vandspinat med rød fermenteret bønnepasta og tofu",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/05/H52-768x768.jpg",spice:0},
+    {code:"H53",name_da:"Stegte pak choi med shiitake-svampe (Vegetar)",name_zh:"香菇扒菜胆",price:148,desc:"Stegte pak choi med shiitake-svampe",img:"",spice:0},
+    {code:"H54",name_da:"Lynstegt Pak Choi (Vegetar)",name_zh:"清炒油菜",price:98,desc:"Lynstegt Pak Choi med hvidløg",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/03/H48-768x432.png",spice:0}
+  ]},
+  {id:"hovedretter_nudler",name_da:"Nudler & Ris",name_zh:"炒面炒饭",discount:true,items:[
+    {code:"N55",name_da:"Stegte nudler/ris/udon/risnudler med oksekød",name_zh:"牛肉炒面/饭/乌冬/河粉",price:138,desc:"Oksekød, æg, grøntsager",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/05/N55-768x913.jpg",spice:0},
+    {code:"N56",name_da:"Stegte nudler/ris/udon/risnudler med kylling",name_zh:"鸡肉炒面/饭/乌冬/河粉",price:138,desc:"Kylling, æg, grøntsager",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/05/N56-768x768.jpg",spice:0},
+    {code:"N57",name_da:"Stegte nudler/ris/udon/risnudler med rejer",name_zh:"大虾炒面/饭/乌冬/河粉",price:138,desc:"Rejer, æg, grøntsager",img:"",spice:0},
+    {code:"N58",name_da:"Vegetar stegte nudler/ris/udon/risnudler",name_zh:"素炒面/饭/乌冬/河粉",price:128,desc:"Æg, ekstra sæsonens grøntsager",img:"",spice:0}
+  ]},
+  {id:"sauce",name_da:"Sauce",name_zh:"酱汁",discount:false,items:[
+    {code:"S55",name_da:"Chili olie",name_zh:"油泼辣椒",price:25,desc:"",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/03/S55.jpg",spice:1},
+    {code:"S56",name_da:"Sød og sur sauce",name_zh:"酸甜酱",price:25,desc:"",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/03/S56-768x480.jpg",spice:0},
+    {code:"S57",name_da:"Dumpling dip",name_zh:"饺子醋",price:15,desc:"",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/03/S57.jpg",spice:0},
+    {code:"S58",name_da:"Chilimayo",name_zh:"辣味蛋黄酱",price:15,desc:"",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/03/S58-768x512.jpg",spice:1},
+    {code:"S59",name_da:"Mayo",name_zh:"标准蛋黄酱",price:15,desc:"",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/03/S59.jpg",spice:0},
+    {code:"S60",name_da:"Sriracha",name_zh:"泰式是拉差辣酱",price:15,desc:"",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/03/S60.jpg",spice:1}
+  ]},
+  {id:"drikkekort",name_da:"Drikkevarer",name_zh:"饮品",discount:false,items:[
+    {code:"V61",name_da:"Kinesisk drik",name_zh:"茶派",price:49,desc:"",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/03/V61.Chinese.jpg",spice:0},
+    {code:"V62",name_da:"Sodavand",name_zh:"碳酸饮料",price:29,desc:"",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/03/V62.sodavand-768x768.png",spice:0},
+    {code:"V63",name_da:"Still water",name_zh:"无泡矿泉水",price:25,desc:"",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/03/V63.Still-water.jpg",spice:0},
+    {code:"V64",name_da:"San Pellegrino",name_zh:"巴黎水",price:60,desc:"",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/03/V64.San-Pellegrino-768x2878.webp",spice:0},
+    {code:"V65",name_da:"Dansk øl",name_zh:"嘉士伯啤酒",price:39,desc:"",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/03/V65.Dansk-ol.webp",spice:0},
+    {code:"V66",name_da:"Kinesisk øl Tsingtao",name_zh:"青岛啤酒",price:49,desc:"",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/03/V66.Tsingtao-768x976.jpg",spice:0},
+    {code:"V67",name_da:"Japansk øl Sapporo",name_zh:"日本三宝乐啤酒",price:49,desc:"",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/03/V67.Soppro.jpg",spice:0},
+    {code:"V68",name_da:"Koreansk Soju Peach/grape 13,0%",name_zh:"韩国烧酒",price:129,desc:"",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/03/V68.Soju_.jpg",spice:0},
+    {code:"V69",name_da:"Rødvin (glas)",name_zh:"红酒 (杯)",price:69,desc:"",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/03/V69.rod-vin.webp",spice:0},
+    {code:"V69-F",name_da:"Rødvin (flaske)",name_zh:"红酒 (瓶)",price:219,desc:"",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/03/V69.rod-vin.webp",spice:0},
+    {code:"V70",name_da:"Hvidvin (glas)",name_zh:"白葡萄酒 (杯)",price:69,desc:"",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/03/V70.Hvidvin.webp",spice:0},
+    {code:"V70-F",name_da:"Hvidvin (flaske)",name_zh:"白葡萄酒 (瓶)",price:219,desc:"",img:"https://www.harbinkitchen.dk/wp-content/uploads/2026/03/V70.Hvidvin.webp",spice:0},
+    {code:"V71",name_da:"Danskvand 50cl",name_zh:"气泡水",price:49,desc:"",img:"",spice:0},
+    {code:"V72",name_da:"Lemonade 50cl",name_zh:"柠檬水",price:59,desc:"",img:"",spice:0}
+  ]}
+];
 
   const modal = document.getElementById('menuModal');
   const modalTitle = document.getElementById('modalTitle');
@@ -811,20 +831,23 @@
       if (!cat) return;
       modalTitle.textContent = cat.name_da;
       modalTitleCn.textContent = cat.name_zh;
-      modalBody.innerHTML = cat.items.map(item => {
-        const takeawayPrice = cat.discount ? Math.round(item.price * 0.9) : null;
-        return `
-          <div class="dish-item">
-            <div class="dish-info">
-              <div class="dish-name">${item.name_da}</div>
-              <div class="dish-name-cn">${item.name_zh}</div>
-            </div>
-            <div class="dish-price-col">
-              <div class="dish-price">${item.price} kr</div>
-              ${takeawayPrice ? `<div class="dish-takeaway">Takeaway ${takeawayPrice} kr</div>` : ''}
-            </div>
-          </div>`;
-      }).join('');
+modalBody.innerHTML = cat.items.map(item => {
+  const takeawayPrice = cat.discount ? Math.round(item.price * 0.9) : null;
+  const spiceLabel = item.spice > 0 ? '<span class="spice">' + '🌶️'.repeat(item.spice) + '</span>' : '';
+  return `
+    <div class="dish-item${item.img ? ' has-img' : ''}">
+      ${item.img ? `<div class="dish-img" style="background-image:url('${item.img}')" onclick="window.open('${item.img}','_blank')"></div>` : ''}
+      <div class="dish-info">
+        <div class="dish-name">${item.name_da} ${spiceLabel}</div>
+        <div class="dish-name-cn">${item.name_zh}</div>
+        ${item.desc ? `<div class="dish-desc">${item.desc}</div>` : ''}
+      </div>
+      <div class="dish-price-col">
+        <div class="dish-price">${item.price} kr</div>
+        ${takeawayPrice ? `<div class="dish-takeaway">Takeaway ${takeawayPrice} kr</div>` : ''}
+      </div>
+    </div>`;
+}).join('');
       modal.classList.add('active');
       document.body.style.overflow = 'hidden';
     });
