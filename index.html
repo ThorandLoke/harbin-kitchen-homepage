@@ -154,19 +154,33 @@
       font-size: 14px; font-weight: 600;
       text-decoration: none;
       transition: all 0.3s;
+      border: none;
     }
     .btn-white:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,0.2); }
-    .btn-ghost {
-      background: transparent;
-      color: var(--white);
+    .btn-warm {
+      background: rgba(201,76,56,0.88);
+      color: #fff;
       padding: 14px 32px;
-      border: 1px solid rgba(255,255,255,0.3);
       border-radius: 100px;
-      font-size: 14px; font-weight: 500;
+      font-size: 14px; font-weight: 600;
       text-decoration: none;
       transition: all 0.3s;
+      border: none;
+      backdrop-filter: blur(6px);
     }
-    .btn-ghost:hover { border-color: var(--white); background: rgba(255,255,255,0.08); }
+    .btn-warm:hover { background: rgba(201,76,56,1); transform: translateY(-2px); box-shadow: 0 8px 30px rgba(201,76,56,0.3); }
+    .btn-cream {
+      background: rgba(250,240,232,0.78);
+      color: var(--dark);
+      padding: 14px 32px;
+      border-radius: 100px;
+      font-size: 14px; font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s;
+      border: none;
+      backdrop-filter: blur(6px);
+    }
+    .btn-cream:hover { background: rgba(250,240,232,0.95); transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,0.15); }
 
     .scroll-line {
       position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
@@ -501,8 +515,8 @@
     <p class="hero-desc hero-fadein">Traditionel kinesisk comfort food – ægte smag fra Harbin, serveret med nordisk varme</p>
     <div class="hero-actions hero-fadein">
       <a href="https://order.harbinkitchen.dk" class="btn-white">Bestil Take Away</a>
-      <a href="https://order.harbinkitchen.dk/book-bord.html" class="btn-ghost">Book Bord 🍽️</a>
-      <a href="#menu" class="btn-ghost">Se Menu</a>
+      <a href="https://order.harbinkitchen.dk/book-bord.html" class="btn-warm">Book Bord 🍽️</a>
+      <a href="#menu" class="btn-cream">Se Menu</a>
     </div>
   </div>
   <div class="scroll-line"></div>
@@ -617,7 +631,7 @@
   <p class="takeaway-note">Gælder alle retter – undtagen drikkevarer & saucer · 外卖全线九折（酒水酱汁除外）</p>
   <div style="position:relative;display:flex;gap:14px;justify-content:center;flex-wrap:wrap;">
     <a href="https://order.harbinkitchen.dk" class="btn-white">Bestil Take Away →</a>
-    <a href="https://order.harbinkitchen.dk/book-bord.html" class="btn-white" style="background:transparent;border:1px solid rgba(255,255,255,0.3);color:var(--white);">Book Bord 🍽️</a>
+    <a href="https://order.harbinkitchen.dk/book-bord.html" class="btn-warm">Book Bord 🍽️</a>
   </div>
   <div style="position:relative;margin-top:24px;padding:14px 24px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:10px;max-width:520px;margin-left:auto;margin-right:auto;font-size:13px;line-height:1.6;">
     <div style="color:rgba(255,255,255,0.85);font-weight:500;margin-bottom:4px;">💳 Betaling kun i restauranten — ingen online betaling</div>
