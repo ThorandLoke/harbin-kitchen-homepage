@@ -11,6 +11,17 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Harbin Kitchen – 东北小炒</title>
+  <meta name="description" content="Harbin Kitchen - ægte kinesisk comfort food i Gentofte, København. Bestil take away online med 10% rabat. 东北小炒，正宗中国家常菜。">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://harbinkitchen.dk/">
+  <meta property="og:title" content="Harbin Kitchen – 东北小炒">
+  <meta property="og:description" content="Ægte kinesisk comfort food i Gentofte, København. Bestil take away online med 10% rabat.">
+  <meta property="og:url" content="https://harbinkitchen.dk/">
+  <meta property="og:type" content="restaurant">
+  <meta property="og:image" content="https://harbinkitchen.dk/images/首页图.png">
+  <meta property="og:locale" content="da_DK">
+  <meta property="og:site_name" content="Harbin Kitchen">
+  <meta name="theme-color" content="#C94C38">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
@@ -654,8 +665,9 @@
 <section class="info-section" id="info">
   <div class="info-block">
     <h3>Åbningstider</h3>
-    <div class="info-row"><span class="icon">🕐</span><span class="label">Søn–Tor</span><span class="value">12:00 – 21:30</span></div>
-    <div class="info-row"><span class="icon">🕐</span><span class="label">Fre–Lør</span><span class="value">12:00 – 22:00</span></div>
+    <div class="info-row"><span class="icon">🕐</span><span class="label">Man–Tir</span><span class="value">16:00 – 21:30</span></div>
+    <div class="info-row"><span class="icon">🕐</span><span class="label">Ons–Søn</span><span class="value">12:00 – 21:30</span></div>
+    <div id="opening-status" style="margin-top:12px;padding:10px 14px;border-radius:8px;font-size:15px;font-weight:600;"></div>
   </div>
   <div class="info-block">
     <h3>Kontakt</h3>
@@ -701,6 +713,54 @@
 </div>
 
 <script>
+  // ═══════════════════════════════════════
+  // 营业时间实时状态显示
+  // 周一-周二: 16:00-21:30
+  // 周三-周日: 12:00-21:30
+  // ═══════════════════════════════════════
+  function getOpeningHoursForDate(date) {
+    const day = date.getDay();
+    const isMonOrTue = (day === 1 || day === 2);
+    if (isMonOrTue) {
+      return { open: '16:00', close: '21:30', openMinutes: 16*60, closeMinutes: 21*60+30 };
+    }
+    return { open: '12:00', close: '21:30', openMinutes: 12*60, closeMinutes: 21*60+30 };
+  }
+
+  function updateOpeningStatus() {
+    const el = document.getElementById('opening-status');
+    if (!el) return;
+    const now = new Date();
+    const hours = getOpeningHoursForDate(now);
+    const nowMin = now.getHours() * 60 + now.getMinutes();
+    const isOpen = nowMin >= hours.openMinutes && nowMin < hours.closeMinutes;
+    const dayNames = ['Søndag','Mandag','Tirsdag','Onsdag','Torsdag','Fredag','Lørdag'];
+    const today = dayNames[now.getDay()];
+
+    if (isOpen) {
+      el.textContent = 'Åben nu — vi har åbent til kl. ' + hours.close;
+      el.style.background = '#E8F5E9';
+      el.style.color = '#2E7D32';
+      el.style.border = '1px solid #66BB6A';
+    } else if (nowMin < hours.openMinutes) {
+      el.textContent = 'Lukket nu — ' + today + ' åbner kl. ' + hours.open;
+      el.style.background = '#FFF8E1';
+      el.style.color = '#F57F17';
+      el.style.border = '1px solid #FFA726';
+    } else {
+      const tomorrow = new Date(now);
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      const tHours = getOpeningHoursForDate(tomorrow);
+      const tDay = dayNames[tomorrow.getDay()];
+      el.textContent = 'Lukket nu — ' + tDay + ' åbner kl. ' + tHours.open;
+      el.style.background = '#FFF8E1';
+      el.style.color = '#F57F17';
+      el.style.border = '1px solid #FFA726';
+    }
+  }
+  updateOpeningStatus();
+  setInterval(updateOpeningStatus, 60 * 1000);
+
   // Hero bg zoom-in animation
   window.addEventListener('load', () => {
     setTimeout(() => document.getElementById('hero-bg').classList.add('loaded'), 100);
